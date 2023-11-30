@@ -1,0 +1,5 @@
+{
+    "datastore_path": ".matildapp/",
+    "datastore_filename_contracts": "datastore_contracts.json",
+    "datastore_filename_wallets": "datastore_wallets.json"
+}  

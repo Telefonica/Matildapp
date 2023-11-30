@@ -1,0 +1,5 @@
+termcolor
+pynput
+pyreadline
+web3
+py-solc-x
