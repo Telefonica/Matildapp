@@ -1,5 +1,6 @@
 import json
 
+
 class Config:
     __instance = None
     __config = {}
@@ -21,10 +22,9 @@ class Config:
                 self.__config = json.load(config)
         except:
             pass
-        
+
         # Path must to end in /
-        
-    
+
     def get_config(self):
         return self.__config
-    
+

@@ -32,9 +32,10 @@ except:
 
 class Console:
     def console(self):
-        
+
         # Configuring the commpleter
-        self.comp = Completer(['load', 'set', 'unset', 'global', 'show', 'run', 'jobs', 'back', 'quit', 'help', 'connect','disconnect','datastore'])
+        self.comp = Completer(['load', 'set', 'unset', 'global', 'show', 'run',
+                              'jobs', 'back', 'quit', 'help', 'connect', 'disconnect', 'datastore'])
         readline.set_completer_delims(' \t\n;')
         readline.parse_and_bind("tab: complete")
         readline.set_completer(self.comp.complete)
@@ -47,85 +48,88 @@ class Console:
             "global": self.setglobal,
             "show": self.show,
             "run": self.run,
-            #"jobs": self.jobs,
+            # "jobs": self.jobs,
             "back": self.back,
             "quit": self.quit,
+            "exit": self.quit,
             "help": self.help,
             "connect": self.connect,
             "disconnect": self.disconnect,
             "datastore": self.datastore,
         }
 
-        print (banners.get_banner())
+        print(banners.get_banner())
         cprint(' [+]', 'yellow', end='')
-        print (' Starting the console...')
+        print(' Starting the console...')
         cprint(' [*]', 'green', end='')
-        print (' Console ready!\n')
+        print(' Console ready!\n')
 
         self.session = None
-        
+
         while True:
             try:
                 if self.session is None:
                     # /* Definitions available for use by readline clients. */
                     # define RL_PROMPT_START_IGNORE  '\001'
                     # define RL_PROMPT_END_IGNORE    '\002'
-                    user_input = input('\001\033[1;32m\002sc $ > \001\033[0m\002').strip()
+                    user_input = input(
+                        '\001\033[1;32m\002sc $ > \001\033[0m\002').strip()
                 else:
                     user_input = input('sc $ >[' +
-                                    '\001\033[1;32m\002' +
-                                    self.session.header() +
-                                    '\001\033[0m\002' +
-                                    ']> ').strip()
-                
+                                       '\001\033[1;32m\002' +
+                                       self.session.header() +
+                                       '\001\033[0m\002' +
+                                       ']> ').strip()
+
                 if user_input == "":
                     continue
                 else:
-                   self.switch(user_input)
+                    self.switch(user_input)
             except KeyboardInterrupt:
                 signal.signal(signal.SIGINT, self.keyboard_interrupt_handler)
                 print("")
             except Exception as e:
                 print_error(e)
-    
+
     def keyboard_interrupt_handler(self, signal, frame):
         print_error("Closing sc, Wait...")
-                
 
     # Switcher
+
     def switch(self, u_input):
         try:
             if u_input.startswith("#"):
                 self.execute_command(u_input[1:])
             else:
                 u_input = u_input.split()
-                if len(u_input) >=  2:
-                    self.switcher.get(u_input[0], self._command_error)(u_input[1:])
+                if len(u_input) >= 2:
+                    self.switcher.get(
+                        u_input[0], self._command_error)(u_input[1:])
                 else:
                     self.switcher.get(u_input[0], self._command_error)()
         except Exception as e:
             print_error(e)
-    
+
     # Functions to check errors begin
     def _command_error(self):
         raise Exception('Command not found')
 
     def _raise_exception_specify(self, option):
-        raise Exception("Specify %s" %(option))
-    
+        raise Exception("Specify %s" % (option))
+
     def _check_load_module(self):
         if not self.session:
             raise Exception('Please, load a module')
-    
+
     def _check_set(self, user_input, op=2):
         self._check_load_module()
-        throw  = False
+        throw = False
         if op == 1:
-            if not user_input: 
-                throw  = True
-        else:   
+            if not user_input:
+                throw = True
+        else:
             if not (len(user_input) >= 2):
-                throw  = True
+                throw = True
         if throw:
             self._raise_exception_specify("value")
     # Functions to check errors end
@@ -143,7 +147,7 @@ class Console:
     def load(self, user_input=None):
         if not user_input:
             self._raise_exception_specify("module")
-        self.session = Session(user_input[0])               
+        self.session = Session(user_input[0])
         # The module is incorrect
         if not(self.session.correct_module()):
             print_error('Invalid module')
@@ -166,7 +170,6 @@ class Console:
                 print_error("ID job with multiple parameters")
         elif len(user_input) > 0 and  user_input[0] == "-K":
             Jobs.get_instance().kill_all_jobs()'''
-
 
     def set(self, user_input=[]):
         self._check_set(user_input)
@@ -194,7 +197,7 @@ class Console:
         self._check_load_module()
         self.session.run()
 
-    def back(self,user_input=[]):
+    def back(self, user_input=[]):
         self.session = None
 
     def quit(self, user_input=[]):
@@ -205,14 +208,14 @@ class Console:
 
     def help(self, user_input=[]):
         show_help()
-        #Command functionality end
+        # Command functionality end
 
-    def connect(self,user_input=[]):
+    def connect(self, user_input=[]):
         '''
             usage: connect provider <url> port <port> chainid <chain_id>
             six params!
         '''
-        #Connect.get_instance().del_connection()
+        # Connect.get_instance().del_connection()
         values = {}
         if len(user_input) == 6:
             if "provider" == user_input[0] or "port" == user_input[0] or "chainid" == user_input[0]:
@@ -225,22 +228,22 @@ class Console:
                     values[user_input[4]] = user_input[5]
 
             if len(values.keys()) != 3:
-                print_error("Arguments incorrect: connect provider <url> port <port> chainid <chain_id>")
+                print_error(
+                    "Arguments incorrect: connect provider <url> port <port> chainid <chain_id>")
             else:
                 Connect.get_instance().add_connection(values)
         else:
-            print_error("Arguments incorrect: connect provider <url> port <port> chainid <chain_id>")
+            print_error(
+                "Arguments incorrect: connect provider <url> port <port> chainid <chain_id>")
 
-
-    def disconnect(self,user_input=[]):
+    def disconnect(self, user_input=[]):
         if Connect.get_instance().has_connection():
             Connect.get_instance().del_connection()
             print_ok("Disconnected Blockchain OK!")
         else:
             print_info("No connection found")
 
-    
-    def datastore(self,user_input=[]):
+    def datastore(self, user_input=[]):
         if len(user_input) == 0:
             DataStore.get_instance().help()
 
@@ -249,7 +252,7 @@ class Console:
                 DataStore.get_instance().save()
             else:
                 DataStore.get_instance().help()
-        
+
         elif len(user_input) == 2:
             if user_input[0] == "contract" and user_input[1] == "show":
                 DataStore.get_instance().show("contract")
@@ -336,7 +339,8 @@ if __name__ == "__main__":
     if exist_datastore_wallet():
         DataStore.get_instance().read_file_wallets_datastore()
     parser = argparse.ArgumentParser()
-    parser.add_argument("-f", "--file", help="File with instructions, one per line...")
+    parser.add_argument(
+        "-f", "--file", help="File with instructions, one per line...")
     args = parser.parse_args()
     if args.file:
         th = threading.Thread(target=load_instructions, args=(args.file,))

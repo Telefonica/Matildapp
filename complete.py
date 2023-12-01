@@ -27,7 +27,7 @@ class Completer(object):
 
     def set_commands_to_set(self, commands):
         self.settocomplete = commands
-        
+
     def _listdir(self, root):
         "List directory 'root' appending the path separator to subdirs."
         res = []
@@ -94,17 +94,17 @@ class Completer(object):
         return []
 
     def complete_set(self, args):
-        my_list = [ option + ' ' for option in self.settocomplete 
-                    if (option.startswith(args[0].strip(" ")) 
-                        and option != args[0])]
+        my_list = [option + ' ' for option in self.settocomplete
+                   if (option.startswith(args[0].strip(" "))
+                       and option != args[0])]
         return my_list
-    
+
     def complete_global(self, args):
         return self.complete_set(args)
-    
+
     def complete_unset(self, args):
         return self.complete_set(args)
-    
+
     def complete_unglobal(self, args):
         return self.complete_global(args)
 
@@ -126,5 +126,6 @@ class Completer(object):
             if args:
                 return (impl(args) + [None])[state]
             return [cmd + ' '][state]
-        results = [c + ' ' for c in self.commands if c.startswith(cmd)] + [None]
+        results = [
+            c + ' ' for c in self.commands if c.startswith(cmd)] + [None]
         return results[state]

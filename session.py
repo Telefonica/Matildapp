@@ -6,6 +6,7 @@ from printib import *
 
 import threading
 
+
 class Session(object):
 
     def __init__(self, path):
@@ -26,21 +27,21 @@ class Session(object):
 
     def information(self):
         info = self._module.get_information()
-        print ("")
+        print("")
         for key, value in info.items():
             cprint(" %s" % key, 'yellow')
-            print (' ' + '-' * len(key))
-            print (" |_%s\n" % value)
+            print(' ' + '-' * len(key))
+            print(" |_%s\n" % value)
 
     def options(self):
         opts = self._module.get_options_dict()
         cprint(" Options (Field = Value)", 'yellow')
-        print (" -----------------------")
+        print(" -----------------------")
         flag = 0
         for key, value in opts.items():
             flag += 1
             if flag > 1:
-                print (" |")
+                print(" |")
             # Parameter is mandataroy
             if value[2]:
                 if str(value[0]) == "None":
@@ -57,15 +58,15 @@ class Session(object):
             # Parameter is optional
             else:
                 if str(value[0]) == "None":
-                    print (" |_[OPTIONAL] %s" % key \
-                        + " = %s (%s)" % (value[0], value[1]))
+                    print(" |_[OPTIONAL] %s" % key
+                          + " = %s (%s)" % (value[0], value[1]))
                 else:
                     sys.stdout.write(" |_%s" % key)
                     sys.stdout.write(" = ")
                     cprint("%s" % value[0], 'green', end='')
                     sys.stdout.write(" (% s)\n" % (value[1]))
 
-        print ("\n")
+        print("\n")
 
     def run(self):
         if not(self._module.check_arguments()):
@@ -75,7 +76,7 @@ class Session(object):
         try:
             self._module.run_module()
         except KeyboardInterrupt:
-            print_error('Exiting the module...' )
+            print_error('Exiting the module...')
         except Exception as error:
             m = 'Error running the module: ' + str(error)
             print_error(m)
@@ -85,7 +86,7 @@ class Session(object):
         if name not in self._module.get_options_names():
             raise Exception('Field not found')
         self._module.set_value(name, value)
-    
+
     def unset(self, name):
         if name not in self._module.get_options_names():
             raise Exception('Field not found')
@@ -108,8 +109,8 @@ class Session(object):
         return True
 
     def import_path(self, path):
-        path = path.replace(sep,".")
-        return path.replace(".py","")
+        path = path.replace(sep, ".")
+        return path.replace(".py", "")
 
     def get_options(self):
         return ['set ' + key for key, value in self._module.get_options_dict().items()]

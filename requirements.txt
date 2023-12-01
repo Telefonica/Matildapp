@@ -1,5 +1,6 @@
 termcolor
 pynput
 pyreadline
-web3
+web3==5.31.1
 py-solc-x
+pyevmasm
