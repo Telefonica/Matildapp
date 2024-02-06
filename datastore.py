@@ -28,6 +28,7 @@ class Wallet:
         self.wallet['pkey'] = pkey
         self.wallet['phrase'] = phrase'''
 
+
 class DataStore:
     __instance = None
 
@@ -42,8 +43,8 @@ class DataStore:
             DataStore.__instance = self
             self.contracts = {}
             self.wallet = {}
-    
-    def show(self,type):
+
+    def show(self, type):
         if type == "contract":
             print_info("")
             print_info("Contract structure list")
@@ -51,7 +52,7 @@ class DataStore:
             print_info("")
             for key in self.contracts.keys():
                 print_info("Contract: {}".format(key))
-        
+
         if type == "wallet":
             print_info("")
             print_info("Wallet structure list")
@@ -60,7 +61,7 @@ class DataStore:
             for key in self.wallet.keys():
                 print_info("Wallet: {}".format(key))
 
-    def show_name(self,type,name):
+    def show_name(self, type, name):
         if type == "contract" and name in self.contracts.keys():
             print_info(self.contracts[name])
         elif type == "wallet" and name in self.wallet.keys():
@@ -68,15 +69,15 @@ class DataStore:
         else:
             print_error("{} name not found!".format(type))
 
-    def show_param(self,type,name,param):
+    def show_param(self, type, name, param):
         if type == "contract" and name in self.contracts.keys() and param in self.contracts[name].keys():
             print_info(self.contracts[name][param])
         elif type == "wallet" and name in self.wallet.keys() and param in self.wallet[name].keys():
             print_info(self.wallet[name][param])
         else:
             print_error("{} name not found!".format(type))
-    
-    def get_param(self,type,name,param):
+
+    def get_param(self, type, name, param):
         if type == "contract" and name in self.contracts.keys() and param in self.contracts[name].keys():
             return self.contracts[name][param]
         elif type == "wallet" and name in self.wallet.keys() and param in self.wallet[name].keys():
@@ -84,7 +85,7 @@ class DataStore:
         else:
             return "{} name not found!".format(type)
 
-    def create_name(self,type,name):
+    def create_name(self, type, name):
         if type == "contract" and not name in self.contracts.keys():
             self.contracts[name] = {'address':'','abi':'','opcode':'','bytecode':'','source':'','source_content':''}
             print_ok("contract structure created")
@@ -92,7 +93,7 @@ class DataStore:
             self.wallet[name] = {'address':'','pkey':'','phrase':''}
             print_ok("wallet structure created")
 
-    def delete_name(self,type,name):
+    def delete_name(self, type, name):
         if type == "contract" and name in self.contracts.keys():
             self.contracts.pop(name)
             print_ok("contract structure deleted")
@@ -100,7 +101,7 @@ class DataStore:
             self.wallet.pop(name)
             print_ok("wallet structure deleted")
 
-    def add_value(self,type,name,param,value):
+    def add_value(self, type, name, param, value):
         if type == "contract" and name in self.contracts.keys() and param in self.contracts[name].keys():
             self.contracts[name][param] = value
             print_ok("param {} value added to {} contract structure".format(param,name))
@@ -108,7 +109,7 @@ class DataStore:
             self.wallet[name][param] = value
             print_ok("param {} value added to {} wallet structure".format(param,name))
 
-    def del_value(self,type,name,param):
+    def del_value(self, type, name, param):
         if type == "contract" and name in self.contracts.keys() and param in self.contracts[name].keys():
             self.contracts[name][param] = ''
             print_ok("param {} value deleted on {} contract structure".format(param,name))
@@ -116,7 +117,7 @@ class DataStore:
             self.wallet[name][param] = ''
             print_ok("param {} value deleted on {} wallet structure".format(param,name))
 
-    def mod_value(self,type,name,param,value):
+    def mod_value(self, type, name, param, value):
         if type == "contract" and name in self.contracts.keys() and param in self.contracts[name].keys():
             self.contracts[name][param] = value
             print_ok("param {} value modified on {} contract structure".format(param,name))
@@ -141,7 +142,7 @@ class DataStore:
             return type == "wallet" and name in self.wallet.keys() and param in self.wallet[name].keys()
         return False
 
-    def is_key(self,type,key):
+    def is_key(self, type, key):
         if type == "contract":
             return key in self.contracts.keys()
         if type == "wallet":
@@ -151,7 +152,7 @@ class DataStore:
 
     def random_name(self):
         key = "P"
-        rand = random.randrange(0,9999999)
+        rand = random.randrange(0, 9999999)
         key = key + str(rand)
         return key
 
@@ -188,7 +189,8 @@ class DataStore:
         print_info("Datastore help")
         print_info("")
         print_info("")
-        print_info("Usage: datastore <option> <action> <name contract | wallet> [<param> <value>]")
+        print_info(
+            "Usage: datastore <option> <action> <name contract | wallet> [<param> <value>]")
         print_info("")
         print_info("Options:")
         print_info("")
@@ -209,14 +211,15 @@ class DataStore:
         print_info("")
         
     def show_variables(self):
-        cprint(" Connection data on Blockchain",'yellow')
-        print (" -----------------------------")
+        cprint(" Connection data on Blockchain", 'yellow')
+        print(" -----------------------------")
         flag = 0
         for key, value in self.variables.items():
             flag += 1
             if flag > 1:
-                print (" |")
+                print(" |")
             sys.stdout.write(" |_")
             sys.stdout.write("%s" % key)
             sys.stdout.write(" = %s \n" % (value))
         print("")
+

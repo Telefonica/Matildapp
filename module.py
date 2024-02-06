@@ -7,6 +7,7 @@ from printib import *
 
 #from jobs import Jobs, Job
 
+
 class Module(object):
     def __init__(self, information, options):
         self._information = information
@@ -15,7 +16,7 @@ class Module(object):
         self.update_global()
         self.update_options()
         self.init_args()
-    
+
     def update_global(self):
         variables = Global.get_instance().get_variables()
         for key, value in self.options.items():
@@ -24,7 +25,7 @@ class Module(object):
                     continue
             except:
                 Global.get_instance().add_value(key, None)
-    
+
     def update_options(self):
         variables = Global.get_instance().get_variables()
         for key, value in self.options.items():
@@ -61,14 +62,14 @@ class Module(object):
     def run_module(self):
         raise Exception(
             'ERROR: run_module method must be implemented in the child class')
-    
+
     def run(self, t):
-        #only if it is called with super
-        #management threads
+        # only if it is called with super
+        # management threads
         #job = Job(self._information,t)
-        #Jobs.get_instance().add_value(job)
-        print_ok ('Done!')
-    
+        # Jobs.get_instance().add_value(job)
+        print_ok('Done!')
+
     def check_arguments(self):
         for key, value in self.options.items():
             if value[2] is True and str(value[0]) == "None":
@@ -80,4 +81,3 @@ class Module(object):
         if args:
             payload += " " + " ".join(args)
         os.system(payload)
-
