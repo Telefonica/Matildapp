@@ -1,5 +1,7 @@
-termcolor
+rich
+pyevmasm
+pyfiglet
 pynput
 pyreadline
-web3
 py-solc-x
+web3
