@@ -1,8 +1,8 @@
-from printib import *
-from module import Module
-from modules.utils import get_solidity_contract
+from console import print_ok
 from lib.contract_solidity import Solidity_Contract
 from lib.vulnerabilities.timestamp_dependence import Timestamp_Dependence
+from module import Module
+from utils import get_solidity_contract
 
 
 class CustomModule(Module):
@@ -12,13 +12,14 @@ class CustomModule(Module):
     """
 
     def __init__(self):
-        information = {"Name": "Timestamp Manipulation Solidity check",
-                       "Description": Timestamp_Dependence.info,
-                       "Author": "@chgara"}
+        information = {
+            "Name": "Timestamp Manipulation Solidity check",
+            "Description": Timestamp_Dependence.info,
+            "Author": "@chgara",
+        }
 
         # -----------name-----default_value--description--required?
-        options = {"contract": [
-            None, "Contract path, should be a solidity file", True]}
+        options = {"contract": [None, "Contract path, should be a solidity file", True]}
 
         # Constructor of the parent class
         super(CustomModule, self).__init__(information, options)

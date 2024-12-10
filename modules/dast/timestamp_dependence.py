@@ -1,8 +1,8 @@
-from printib import *
-from module import Module
+from console import print_ok
 from lib.bytecode_contract import ByteCode_Contract
-from modules.utils import get_bytecode_from_address
 from lib.vulnerabilities.timestamp_dependence import Timestamp_Dependence
+from module import Module
+from utils import get_bytecode_from_address
 
 
 class CustomModule(Module):
@@ -12,13 +12,14 @@ class CustomModule(Module):
     """
 
     def __init__(self):
-        information = {"Name": "Deployed contract timestamp manipulation check",
-                       "Description": Timestamp_Dependence.info,
-                       "Author": "@chgara"}
+        information = {
+            "Name": "Deployed contract timestamp manipulation check",
+            "Description": Timestamp_Dependence.info,
+            "Author": "@chgara",
+        }
 
         # -----------name-----default_value--description--required?
-        options = {"address": [
-            None, "Address of the deployed Smart Contract", True]}
+        options = {"address": [None, "Address of the deployed Smart Contract", True]}
 
         # Constructor of the parent class
         super(CustomModule, self).__init__(information, options)
@@ -40,6 +41,5 @@ class CustomModule(Module):
         print_ok("✅ Not vulnerable to 15sec timestamp manipulation, al ok")
 
     def run_module(self) -> None:
-        bytecode: (ByteCode_Contract | None) =\
-            get_bytecode_from_address(self.args)
+        bytecode: ByteCode_Contract | None = get_bytecode_from_address(self.args)
         return self.check_contract(bytecode) if bytecode else None

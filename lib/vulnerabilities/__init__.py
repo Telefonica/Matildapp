@@ -1,4 +1,4 @@
-from printib import *
+from console import print_info
 
 
 class Vulnerability:
@@ -11,7 +11,8 @@ class Vulnerability:
     :param effect: The effect of the vulnerability
     :param confidence: The confidence of the vulnerability
     """
-    swc: (int | str)
+
+    swc: int | str
     cwe_realted: str
     title: str
     description: list[str]
@@ -22,12 +23,15 @@ class Vulnerability:
     info: str = "Vulnerability info"
     code: list[str]
 
-    def __init__(self, swc: (int | str),
-                 cve_related: str,
-                 title: str,
-                 description: list[str],
-                 effect: str,
-                 confidence: str = "Potential"):
+    def __init__(
+        self,
+        swc: int | str,
+        cve_related: str,
+        title: str,
+        description: list[str],
+        effect: str,
+        confidence: str = "Potential",
+    ):
         self.swc = swc
         self.code = []
         self.title = title

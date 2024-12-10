@@ -1,63 +1,39 @@
-from termcolor import colored
+from rich.markup import escape
+
+from console import console
+
+commands = [
+    {"command": "load <module>", "description": "Load a specific module"},
+    {"command": "back", "description": "Unload a module"},
+    {"command": "show", "description": "Show module info and options"},
+    {"command": "set <option> <value>", "description": "Assign value to an option"},
+    {"command": "unset <option>", "description": "Set null an option"},
+    {
+        "command": "global <option> <value>",
+        "description": "Assign value to a global option",
+    },
+    {"command": "run", "description": "Start the module"},
+    {"command": "jobs", "description": "Show jobs in background"},
+    {
+        "command": "networks",
+        "description": "Manage and interact with network configurations (add, remove, show, alias)",
+    },
+    {
+        "command": "wallets",
+        "description": "Manage and interact with wallet configurations (add, remove, show, alias)",
+    },
+    {"command": "help", "description": "Show this text"},
+    {
+        "command": "# system_command",
+        "description": "Executes a command on the local system",
+    },
+    {"command": "quit", "description": "Bye bye matildapp!"},
+]
 
 
-# Commands >> 'load', 'set', 'unset', 'global', 'show', 'run', 'back', 'quit', 'help'
 def show_help():
-    help = "\n"
-    help += colored('load <module>\n', 'yellow')
-    help += "-------------\n"
-    help += "|_ Load a specific module"
-    help += "\n\n"
-
-    help += colored('back\n', 'yellow')
-    help += "----\n"
-    help += "|_ Unload a module"
-    help += "\n\n"
-
-    help += colored('show\n', 'yellow')
-    help += "----\n"
-    help += "|_ Show module info and options"
-    help += "\n\n"
-
-    help += colored('set <option> <value>\n', 'yellow')
-    help += "--------------------\n"
-    help += "|_ Assign value to an option"
-    help += "\n\n"
-
-    help += colored('unset <option>\n', 'yellow')
-    help += "--------------\n"
-    help += "|_ Set null an option"
-    help += "\n\n"
-
-    help += colored(' global <option> <value>\n', 'yellow')
-    help += "-----------------------\n"
-    help += "|_ Assign value to a global option"
-    help += "\n\n"
-
-    help += colored('run\n', 'yellow')
-    help += "---\n"
-    help += "|_ Start the module"
-    help += "\n\n"
-
-    help += colored('jobs\n', 'yellow')
-    help += "---\n"
-    help += "|_ Show jobs in background"
-    help += "\n\n"
-
-    help += colored('help\n', 'yellow')
-    help += "----\n"
-    help += "|_ Show this text"
-    help += "\n\n"
-
-    help += colored('# system_command\n', 'yellow')
-    help += "----\n"
-    help += "|_ Executes a command on the local system"
-    help += "\n\n"
-
-    help += colored('quit\n', 'yellow')
-    help += "----\n"
-    help += "|_ Bye bye on-the-fly!"
-    help += "\n"
-
-    print(help)
-
+    for command in commands:
+        console.print(escape(command["command"]), style="yellow")
+        console.print(f"{'-' * len(command['command'])}")
+        console.print(f'|_ {command["description"]}')
+        console.print()

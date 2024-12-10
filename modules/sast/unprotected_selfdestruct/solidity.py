@@ -1,9 +1,8 @@
-from printib import *
-from module import Module
-from lib.contract import Contract_Parameter, evm_var_types
-from lib.contract_solidity import Solidity_Contract, Solidity_Function
-from modules.utils import count_till_line, get_solidity_contract
+from console import print_ok
+from lib.contract_solidity import Solidity_Contract
 from lib.vulnerabilities.unprotected_selfdestruct import Unprotected_Selfdestruct
+from module import Module
+from utils import count_till_line, get_solidity_contract
 
 
 class CustomModule(Module):
@@ -13,13 +12,14 @@ class CustomModule(Module):
     """
 
     def __init__(self):
-        information = {"Name": "Unprotected Selfdestruct Solidity check",
-                       "Description": Unprotected_Selfdestruct.info,
-                       "Author": "@chgara"}
+        information = {
+            "Name": "Unprotected Selfdestruct Solidity check",
+            "Description": Unprotected_Selfdestruct.info,
+            "Author": "@chgara",
+        }
 
         # -----------name-----default_value--description--required?
-        options = {"contract": [
-            None, "Contract path, should be a solidity file", True]}
+        options = {"contract": [None, "Contract path, should be a solidity file", True]}
 
         # Constructor of the parent class
         super(CustomModule, self).__init__(information, options)
@@ -42,8 +42,7 @@ class CustomModule(Module):
                 if not "selfdestruct(" in statement:
                     continue
                 line_num = count_till_line(statement, contract)
-                vuln.add_description(
-                    f"Found in function {f.selector} and line {line_num}")
+                vuln.add_description(f"Found in function {f.selector} and line {line_num}")
                 vuln.add_code(statement)
                 vuln.print_vulnerability()
                 return

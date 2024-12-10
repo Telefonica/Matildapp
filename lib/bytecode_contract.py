@@ -1,5 +1,6 @@
-from printib import print_error
 from pyevmasm import disassemble_hex
+
+from console import print_error
 from lib.contract import Contract, Contract_Function
 
 
@@ -8,6 +9,7 @@ class ByteCode_Contract(Contract):
     Bytecode smart contract
     :param bytecode: The compiled code of the smart contract
     """
+
     bytecode: str
     opcodes: list[str]
 

@@ -1,5 +1,6 @@
-from termcolor import colored, cprint
 import sys
+
+from console import console
 
 
 class Global:
@@ -30,7 +31,7 @@ class Global:
         return self.variables
 
     def show_variables(self):
-        cprint(" Options (Field = Value)", 'yellow')
+        console.print(" Options (Field = Value)", style="yellow")
         print(" -----------------------")
         flag = 0
         for key, value in self.variables.items():
@@ -41,4 +42,3 @@ class Global:
             sys.stdout.write("%s" % key)
             sys.stdout.write(" = %s \n" % (value))
         print("")
-

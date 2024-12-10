@@ -1,8 +1,8 @@
-from printib import *
-from module import Module
-from modules.utils import get_bytecode_from_address
+from console import print_ok
 from lib.bytecode_contract import ByteCode_Contract
 from lib.vulnerabilities.hardcoded_gas_call import Hardcoded_Gas_Call
+from module import Module
+from utils import get_bytecode_from_address
 
 
 class CustomModule(Module):
@@ -12,13 +12,14 @@ class CustomModule(Module):
     """
 
     def __init__(self):
-        information = {"Name": "Hardcoded Gass Call Bytecode check",
-                       "Description": Hardcoded_Gas_Call.info,
-                       "Author": "@chgara"}
+        information = {
+            "Name": "Hardcoded Gass Call Bytecode check",
+            "Description": Hardcoded_Gas_Call.info,
+            "Author": "@chgara",
+        }
 
         # -----------name-----default_value--description--required?
-        options = {"bytecode": [
-            None, "Bytecode or path to .txt containing the bytecode", True]}
+        options = {"bytecode": [None, "Bytecode or path to .txt containing the bytecode", True]}
 
         # Constructor of the parent class
         super(CustomModule, self).__init__(information, options)
@@ -58,13 +59,13 @@ class CustomModule(Module):
 
             # go back till find the push20 0xffffffffffffffffffffffffffffffffffffffff instruction
             lastJ = 0
-            for j in range(i-1, 0, -1):
+            for j in range(i - 1, 0, -1):
                 opcode = contract.opcodes[j]
                 if opcode == "PUSH20 0xffffffffffffffffffffffffffffffffffffffff":
                     lastJ = j
                     break
 
-            for k in range(lastJ+1, lastJ+4):
+            for k in range(lastJ + 1, lastJ + 4):
                 instruction = contract.opcodes[k].split(" ")
                 if not instruction[0].startswith("PUSH") or not instruction[1].startswith("0x"):
                     continue
@@ -74,16 +75,16 @@ class CustomModule(Module):
                 except ValueError:
                     continue
                 if gas_amount == 2300:
+                    hardcoded_gas_call.add_code(f"Found a address.send() or address.transfer() call in the contract")
                     hardcoded_gas_call.add_code(
-                        f"Found a address.send() or address.transfer() call in the contract")
-                    hardcoded_gas_call.add_code(
-                        f"   Please do not use send() or transfer() since it sends a fixed amount of gas")
+                        f"   Please do not use send() or transfer() since it sends a fixed amount of gas"
+                    )
                 if not gas_amount == 2300:
-                    hardcoded_gas_call.add_code(
-                        f"Found a call with hardcoded gas amount in the contract")
+                    hardcoded_gas_call.add_code(f"Found a call with hardcoded gas amount in the contract")
 
                 hardcoded_gas_call.add_code(
-                    f"   If you use a fixed amount of gas your contract can suffer DoS in the future, see EIP-150 for more info")
+                    f"   If you use a fixed amount of gas your contract can suffer DoS in the future, see EIP-150 for more info"
+                )
                 found = True
                 break
 
@@ -92,6 +93,5 @@ class CustomModule(Module):
         hardcoded_gas_call.print_vulnerability()
 
     def run_module(self) -> None:
-        bytecode: (ByteCode_Contract | None) =\
-            get_bytecode_from_address(self.args)
+        bytecode: ByteCode_Contract | None = get_bytecode_from_address(self.args)
         return self.check_contract(bytecode) if bytecode else None

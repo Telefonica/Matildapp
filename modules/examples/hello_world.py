@@ -1,20 +1,24 @@
-from termcolor import colored, cprint
 from module import Module
 from connect import Connect
 
 import threading
 import time
 
+
 class CustomModule(Module):
     def __init__(self):
-        information = {"Name": "My hello module",
-                       "Description": "Test module",
-                       "Author": "pepe"}
+        information = {
+            "Name": "My hello module",
+            "Description": "Test module",
+            "Author": "pepe",
+        }
 
         # -----------name-----default_value--description--required?
-        options = {"message": ["hello world!", "Message for you", True],
-                   "option2": [None, "Text description", False],
-                   "option3": [None, "Text description", False]}
+        options = {
+            "message": ["hello world!", "Message for you", True],
+            "option2": [None, "Text description", False],
+            "option3": [None, "Text description", False],
+        }
 
         # Constructor of the parent class
         super(CustomModule, self).__init__(information, options)
@@ -23,12 +27,10 @@ class CustomModule(Module):
         # after the user has set the values
         self._option_name = None
 
-    
     # This module must be always implemented, it is called by the run option
     def run_module(self):
-
         print(self.args["message"])
-        '''def go():
+        """def go():
             print(self.args["message"])
 
             t = threading.currentThread()
@@ -37,6 +39,6 @@ class CustomModule(Module):
                 time.sleep(10)
 
         thread1 = threading.Thread(target=go)
-        thread1.start()'''
-       
-        #super(CustomModule, self).run(t=thread1)
+        thread1.start()"""
+
+        # super(CustomModule, self).run(t=thread1)

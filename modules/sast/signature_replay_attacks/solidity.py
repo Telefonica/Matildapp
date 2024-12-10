@@ -1,9 +1,7 @@
-from printib import *
-from module import Module
-from lib.contract import Contract_Parameter, evm_var_types
-from modules.utils import count_till_line, get_solidity_contract
-from lib.contract_solidity import Solidity_Contract, Solidity_Function
+from lib.contract_solidity import Solidity_Contract
 from lib.vulnerabilities.signature_replay_attack import Signature_Replay_Attack
+from module import Module
+from utils import get_solidity_contract
 
 
 class CustomModule(Module):
@@ -13,9 +11,11 @@ class CustomModule(Module):
     """
 
     def __init__(self):
-        information = {"Name": "Signature replay attack",
-                       "Description": Signature_Replay_Attack.info,
-                       "Author": "@chgara"}
+        information = {
+            "Name": "Signature replay attack",
+            "Description": Signature_Replay_Attack.info,
+            "Author": "@chgara",
+        }
 
         # -----------name-----default_value--description--required?
         options = {"contract": [None, "Contract path, Solidity only", True]}

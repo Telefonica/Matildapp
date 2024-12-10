@@ -1,8 +1,8 @@
-from printib import *
-from module import Module
-from modules.utils import count_till_line, get_bytecode_from_address
+from console import print_ok
 from lib.bytecode_contract import ByteCode_Contract
 from lib.vulnerabilities.sender_phising import Sender_Phising
+from module import Module
+from utils import count_till_line, get_bytecode_from_address
 
 
 class CustomModule(Module):
@@ -12,13 +12,10 @@ class CustomModule(Module):
     """
 
     def __init__(self):
-        information = {"Name": "Sender Phising Check",
-                       "Description": Sender_Phising.info,
-                       "Author": "@chgara"}
+        information = {"Name": "Sender Phising Check", "Description": Sender_Phising.info, "Author": "@chgara"}
 
         # -----------name-----default_value--description--required?
-        options = {"bytecode": [
-            None, "Bytecode or path to .txt containing the bytecode", True]}
+        options = {"bytecode": [None, "Bytecode or path to .txt containing the bytecode", True]}
 
         # Constructor of the parent class
         super(CustomModule, self).__init__(information, options)
@@ -36,8 +33,7 @@ class CustomModule(Module):
         for instruction in contract.opcodes:
             if "ORIGIN" in instruction:
                 position = count_till_line(instruction, contract.opcodes)
-                phising_vuln.add_code(
-                    f"Found ORIGIN opcode in position {position}")
+                phising_vuln.add_code(f"Found ORIGIN opcode in position {position}")
                 phising_vuln.print_vulnerability()
                 return
 

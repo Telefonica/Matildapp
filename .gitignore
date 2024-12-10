@@ -6,3 +6,8 @@
 __pycache__/
 *.py[cod]
 *$py.class
+
+test_*.py
+contracts.json
+networks.json
+wallets.json

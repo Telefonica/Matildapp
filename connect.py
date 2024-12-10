@@ -1,9 +1,8 @@
-#from asyncio.windows_events import NULL
-from socket import create_connection
-from termcolor import colored, cprint
 import sys
+
 from web3 import Web3
-from printib import *
+
+from console import print_error, print_info
 
 
 class Connect:
@@ -49,16 +48,18 @@ class Connect:
 
     def deploy_contract(self, abi, bytecode, opcode, address, pkey):
         if self.has_connection():
-            contract = self.w3.eth.contract(
-                abi=abi, opcodes=opcode, bytecode=bytecode)
+            contract = self.w3.eth.contract(abi=abi, opcodes=opcode, bytecode=bytecode)
             nonce = self.w3.eth.getTransactionCount(address)
             gas_price = self.w3.eth.gas_price
-            params_transaction = {"from": address, "nonce": nonce,
-                                  "gasPrice": gas_price, "chainId": int(self.variables["chainid"])}
+            params_transaction = {
+                "from": address,
+                "nonce": nonce,
+                "gasPrice": gas_price,
+                "chainId": int(self.variables["chainid"]),
+            }
             transaction = contract.constructor().build_transaction(params_transaction)
             # sign transaction
-            signed = self.w3.eth.account.sign_transaction(
-                transaction, private_key=pkey)
+            signed = self.w3.eth.account.sign_transaction(transaction, private_key=pkey)
             hash = self.w3.eth.send_raw_transaction(signed.rawTransaction)
             receipt = self.w3.eth.wait_for_transaction_receipt(hash)
             print_info("Contract deployed!")
@@ -79,7 +80,7 @@ class Connect:
         return self.variables
 
     def show_variables(self):
-        cprint(" Connection data on Blockchain", 'yellow')
+        print_info(" Connection data on Blockchain")
         print(" -----------------------------")
         flag = 0
         for key, value in self.variables.items():

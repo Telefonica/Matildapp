@@ -1,8 +1,8 @@
-from printib import *
-from module import Module
-from modules.utils import get_bytecode_from_path
+from console import print_ok
 from lib.bytecode_contract import ByteCode_Contract
 from lib.vulnerabilities.timestamp_dependence import Timestamp_Dependence
+from module import Module
+from utils import get_bytecode_from_path
 
 
 class CustomModule(Module):
@@ -12,13 +12,14 @@ class CustomModule(Module):
     """
 
     def __init__(self):
-        information = {"Name": "Timestamp manipulation Bytecode Check",
-                       "Description": Timestamp_Dependence.info,
-                       "Author": "@chgara"}
+        information = {
+            "Name": "Timestamp manipulation Bytecode Check",
+            "Description": Timestamp_Dependence.info,
+            "Author": "@chgara",
+        }
 
         # -----------name-----default_value--description--required?
-        options = {"bytecode": [
-            None, "Bytecode or path to .txt containing the bytecode", True]}
+        options = {"bytecode": [None, "Bytecode or path to .txt containing the bytecode", True]}
 
         # Constructor of the parent class
         super(CustomModule, self).__init__(information, options)

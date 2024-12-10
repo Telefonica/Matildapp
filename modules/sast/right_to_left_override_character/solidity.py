@@ -1,8 +1,8 @@
-from printib import *
-from module import Module
+from console import print_ok
 from lib.contract_solidity import Solidity_Contract
-from modules.utils import count_till_line, get_solidity_contract
 from lib.vulnerabilities.rigth_to_left_override_character import Right_To_Left_Override_Character
+from module import Module
+from utils import count_till_line, get_solidity_contract
 
 
 class CustomModule(Module):
@@ -11,16 +11,18 @@ class CustomModule(Module):
     For more info about the vulnerability/scam you can see in the file:
           lib.vulnerabilities.rigth_to_left_override_character
     """
+
     # TODO
 
     def __init__(self):
-        information = {"Name": "Rigth to left override Solidity check",
-                       "Description": Right_To_Left_Override_Character.info,
-                       "Author": "@chgara"}
+        information = {
+            "Name": "Rigth to left override Solidity check",
+            "Description": Right_To_Left_Override_Character.info,
+            "Author": "@chgara",
+        }
 
         # -----------name-----default_value--description--required?
-        options = {"contract": [
-            None, "Contract path, should be a solidity file", True]}
+        options = {"contract": [None, "Contract path, should be a solidity file", True]}
 
         # Constructor of the parent class
         super(CustomModule, self).__init__(information, options)

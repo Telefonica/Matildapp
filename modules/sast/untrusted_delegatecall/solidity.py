@@ -1,9 +1,8 @@
-from printib import *
-from module import Module
 from lib.contract import Contract_Parameter, evm_var_types
-from modules.utils import count_till_line, get_solidity_contract
 from lib.contract_solidity import Solidity_Contract, Solidity_Function
 from lib.vulnerabilities.untrusted_delegatecall import Untrusted_Delegatecall
+from module import Module
+from utils import count_till_line, get_solidity_contract
 
 
 class CustomModule(Module):
@@ -13,9 +12,7 @@ class CustomModule(Module):
     """
 
     def __init__(self):
-        information = {"Name": "Untrusted delegate",
-                       "Description": Untrusted_Delegatecall.info,
-                       "Author": "@chgara"}
+        information = {"Name": "Untrusted delegate", "Description": Untrusted_Delegatecall.info, "Author": "@chgara"}
 
         # -----------name-----default_value--description--required?
         options = {"contract": [None, "Contract path DESCRIPTION", True]}
@@ -62,8 +59,7 @@ class CustomModule(Module):
                         continue
                     if p.name in statement:
                         line_num = count_till_line(statement, contract)
-                        vuln.add_description(
-                            f"Found in function {f.selector} and line {line_num}")
+                        vuln.add_description(f"Found in function {f.selector} and line {line_num}")
                         vuln.add_code(statement)
         return found
 

@@ -1,8 +1,7 @@
-from printib import *
-from module import Module
-from modules.utils import get_solidity_contract
 from lib.contract_solidity import Solidity_Contract
 from lib.vulnerabilities.safeguarding_constructor import Safeguading_Constructor
+from module import Module
+from utils import get_solidity_contract
 
 
 class CustomModule(Module):
@@ -12,10 +11,11 @@ class CustomModule(Module):
     """
 
     def __init__(self):
-        information = {"Name": "Constructor Safeguarding vulnerability check",
-                       "Description": Safeguading_Constructor.info,
-
-                       "Author": "@chgara"}
+        information = {
+            "Name": "Constructor Safeguarding vulnerability check",
+            "Description": Safeguading_Constructor.info,
+            "Author": "@chgara",
+        }
 
         # -----------name-----default_value--description--required?
         options = {"contract": [None, "Contract path", True]}
@@ -34,7 +34,7 @@ class CustomModule(Module):
         """
         pragma_version = contract.pragma_version
         safeguarding_vuln = Safeguading_Constructor()
-        if ([int(x) for x in pragma_version] > [0, 4, 22]):
+        if [int(x) for x in pragma_version] > [0, 4, 22]:
             for f in contract.functions:
                 if contract.name == f.selector:
                     safeguarding_vuln.print_vulnerability()

@@ -1,8 +1,8 @@
-from printib import *
-from module import Module
+from console import print_ok
 from lib.contract_solidity import Solidity_Contract
-from modules.utils import count_till_line, get_solidity_contract
 from lib.vulnerabilities.hardcoded_gas_call import Hardcoded_Gas_Call
+from module import Module
+from utils import count_till_line, get_solidity_contract
 
 
 class CustomModule(Module):
@@ -12,13 +12,14 @@ class CustomModule(Module):
     """
 
     def __init__(self):
-        information = {"Name": "Hardcoded Gas call Solidity check",
-                       "Description": Hardcoded_Gas_Call.info,
-                       "Author": "@chgara"}
+        information = {
+            "Name": "Hardcoded Gas call Solidity check",
+            "Description": Hardcoded_Gas_Call.info,
+            "Author": "@chgara",
+        }
 
         # -----------name-----default_value--description--required?
-        options = {"contract": [
-            None, "Contract path, should be a solidity file", True]}
+        options = {"contract": [None, "Contract path, should be a solidity file", True]}
 
         # Constructor of the parent class
         super(CustomModule, self).__init__(information, options)
@@ -46,23 +47,18 @@ class CustomModule(Module):
             if ".send(" in statement:
                 found = True
                 line_num = count_till_line(statement, contract)
-                hardcoded_gas_call.add_description(
-                    f"Found send() in line {line_num} of contract {contract.name}"
-                )
+                hardcoded_gas_call.add_description(f"Found send() in line {line_num} of contract {contract.name}")
                 hardcoded_gas_call.add_code(f"    {statement}")
             if ".transfer(" in statement:
                 found = True
                 line_num = count_till_line(statement, contract)
-                hardcoded_gas_call.add_description(
-                    f"Found transfer() in line {line_num} of contract {contract.name}"
-                )
+                hardcoded_gas_call.add_description(f"Found transfer() in line {line_num} of contract {contract.name}")
                 hardcoded_gas_call.add_code(f"    {statement}")
             if ".call" in statement and ".gas(" in statement:
                 # TODO: add check to expect a not variable inside the gas()
                 found = True
                 line_num = count_till_line(statement, contract)
-                hardcoded_gas_call.add_description(
-                    f"Found .call.gas() in line {line_num} of contract {contract.name}")
+                hardcoded_gas_call.add_description(f"Found .call.gas() in line {line_num} of contract {contract.name}")
                 hardcoded_gas_call.add_code(f"    {statement}")
 
             if ".call{" in statement and "gas:" in statement:
@@ -70,12 +66,12 @@ class CustomModule(Module):
                 found = True
                 line_num = count_till_line(statement, contract)
                 hardcoded_gas_call.add_description(
-                    f"Found .call{'{gas:limit}'} in line {line_num} of contract {contract.name}")
+                    f"Found .call{'{gas:limit}'} in line {line_num} of contract {contract.name}"
+                )
                 hardcoded_gas_call.add_code(f"    {statement}")
 
         if found:
-            hardcoded_gas_call.add_description(
-                "Remove the use of send(), transfer() and .call.gas()")
+            hardcoded_gas_call.add_description("Remove the use of send(), transfer() and .call.gas()")
             hardcoded_gas_call.print_vulnerability()
             return
         print_ok("✅ Not vulnerable to hardcoded gas call denegation, al ok")

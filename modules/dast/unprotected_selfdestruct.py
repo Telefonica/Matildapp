@@ -1,8 +1,8 @@
-from printib import *
-from module import Module
-from modules.utils import get_bytecode_from_address, get_bytecode_from_path
+from console import print_ok
 from lib.bytecode_contract import ByteCode_Contract
 from lib.vulnerabilities.unprotected_selfdestruct import Unprotected_Selfdestruct
+from module import Module
+from utils import get_bytecode_from_address
 
 
 class CustomModule(Module):
@@ -12,13 +12,14 @@ class CustomModule(Module):
     """
 
     def __init__(self):
-        information = {"Name": "Unprotected Selfdestruct Solidity check",
-                       "Description": Unprotected_Selfdestruct.info,
-                       "Author": "@chgara"}
+        information = {
+            "Name": "Unprotected Selfdestruct Solidity check",
+            "Description": Unprotected_Selfdestruct.info,
+            "Author": "@chgara",
+        }
 
         # -----------name-----default_value--description--required?
-        options = {"address": [
-            None, "Address of the deployed Smart Contract", True]}
+        options = {"address": [None, "Address of the deployed Smart Contract", True]}
 
         # Constructor of the parent class
         super(CustomModule, self).__init__(information, options)

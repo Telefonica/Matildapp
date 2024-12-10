@@ -1,8 +1,7 @@
-from printib import *
-from module import Module
 from lib.contract_solidity import Solidity_Contract
-from modules.utils import count_till_line, get_solidity_contract
 from lib.vulnerabilities.array_length_manipulation import Array_Length_Manipulation
+from module import Module
+from utils import count_till_line, get_solidity_contract
 
 
 class CustomModule(Module):
@@ -12,13 +11,14 @@ class CustomModule(Module):
     """
 
     def __init__(self):
-        information = {"Name": "Array Length manipulation Solidity check",
-                       "Description": Array_Length_Manipulation.info,
-                       "Author": "@chgara"}
+        information = {
+            "Name": "Array Length manipulation Solidity check",
+            "Description": Array_Length_Manipulation.info,
+            "Author": "@chgara",
+        }
 
         # -----------name-----default_value--description--required?
-        options = {"contract": [
-            None, "Contract path, should be a solidity file", True]}
+        options = {"contract": [None, "Contract path, should be a solidity file", True]}
 
         # Constructor of the parent class
         super(CustomModule, self).__init__(information, options)
@@ -40,10 +40,7 @@ class CustomModule(Module):
             4. Normal user have access to the   array
         Final conlcusion: 1. and 2. and 3. and 4.
         """
-        arrays = [
-            x.split("[]")[1].split(" ")[-1].strip(";")
-            for x in contract.code if "[]" in x
-        ]
+        arrays = [x.split("[]")[1].split(" ")[-1].strip(";") for x in contract.code if "[]" in x]
 
         if len(arrays) == 0:
             return
@@ -51,15 +48,13 @@ class CustomModule(Module):
         found = False
         length_manipultion = Array_Length_Manipulation()
         for line in contract.code:
-            if not '.length=' in line.replace(" ", ""):
+            if not ".length=" in line.replace(" ", ""):
                 continue
             if not line.split(".length")[0].split()[-1] in arrays:
                 continue
             found = True
             line_num = count_till_line(line, contract)
-            length_manipultion.add_code(
-                f'{line_num}: {line.strip()}'
-            )
+            length_manipultion.add_code(f"{line_num}: {line.strip()}")
 
         length_manipultion.print_vulnerability() if found else None
 
